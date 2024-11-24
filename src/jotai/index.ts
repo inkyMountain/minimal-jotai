@@ -5,7 +5,7 @@ type Atom<Value = unknown> = {
 };
 type AtomState<Value = unknown> = {
   value: Value;
-  listeners: Set<(value: Value) => void>;
+  listeners: Set<() => void>;
 };
 
 export const atom = <Value>(initialValue: Value): Atom<Value> => {
@@ -33,9 +33,8 @@ export const useAtom = <Value>(atom: Atom<Value>) => {
   const [state, setState] = useState<Value>(atomState.value);
 
   useEffect(() => {
-    const listener = (value: Value) => {
-      console.log("listener runs ==>", value);
-      setState(value);
+    const listener = () => {
+      setState(atomState.value);
     };
     atomState.listeners.add(listener);
     return () => {
@@ -44,9 +43,9 @@ export const useAtom = <Value>(atom: Atom<Value>) => {
   }, [atomState]);
 
   const setAtomValue = (value: Value) => {
-    console.log("value ==========>", value);
+    atomState.value = value;
     atomState.listeners.forEach((listener) => {
-      listener(value);
+      listener();
     });
   };
 
