@@ -1,6 +1,5 @@
-import { useMemo, useReducer, useRef } from "react";
 import "./App.css";
-import { atom, useAtom } from "./jotai";
+import { atom, useAtom } from "./jotai/index";
 
 const countAtom = atom(0);
 
